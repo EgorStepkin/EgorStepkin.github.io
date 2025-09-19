@@ -92,44 +92,36 @@
     </section>
 
     <section id="try">
-        <div class="container">
-            <h2>Начните бесплатно прямо сейчас</h2>
-            <form action="https://formsubmit.co/egorpu@gmail.com" method="POST" id="contact-form">
-                <input type="text" name="name" placeholder="Ваше имя" required>
-                <input type="text" name="profession" placeholder="Ваша профессия" required>
-                
-                <div class="contact-method">
-                    <div class="method-selector">
-                        <label>
-                            <input type="radio" name="contact_method" value="telegram" checked>
-                            <span>Telegram</span>
-                        </label>
-                        <label>
-                            <input type="radio" name="contact_method" value="phone">
-                            <span>Телефон</span>
-                        </label>
-                    </div>
-                    
-                    <div id="telegram-field" class="contact-field">
-                        <input type="text" name="telegram" placeholder="Ваш Telegram @username (без @)" 
-                               pattern="[A-Za-z0-9_]{5,32}" 
-                               title="От 5 до 32 символов: буквы, цифры и подчеркивания">
-                    </div>
-                    
-                    <div id="phone-field" class="contact-field" style="display:none">
-                        <input type="tel" name="phone" placeholder="Телефон (например, +79161234567)"
-                               pattern="\+7\d{10}"
-                               title="Формат: +79161234567">
-                    </div>
+    <div class="container">
+        <h2>Начните бесплатно прямо сейчас</h2>
+        <form action="https://formsubmit.co/ваш-email@gmail.com" method="POST">
+            <input type="text" name="name" placeholder="Ваше имя" required>
+            <input type="text" name="profession" placeholder="Ваша профессия" required>
+            
+            <div class="contact-options">
+                <div class="contact-option">
+                    <input type="radio" id="contact-telegram" name="contact_type" value="telegram" checked>
+                    <label for="contact-telegram">Telegram</label>
+                    <input type="text" name="telegram" placeholder="Ваш Telegram @username" 
+                           pattern="[A-Za-z0-9_]{5,32}">
                 </div>
                 
-                <input type="hidden" name="_next" value="https://egorstepkin.github.io/thanks.html">
-                <input type="hidden" name="_subject" value="Новая заявка с лендинга!">
-                <input type="text" name="_honey" style="display:none">
-                <button type="submit" id="submit-btn">Получить доступ</button>
-            </form>
-        </div>
-    </section>
+                <div class="contact-option">
+                    <input type="radio" id="contact-phone" name="contact_type" value="phone">
+                    <label for="contact-phone">Телефон</label>
+                    <input type="tel" name="phone" placeholder="+7 999 123-45-67"
+                           pattern="\+7\s?\d{3}\s?\d{3}[-]?\d{2}[-]?\d{2}">
+                </div>
+            </div>
+            
+            <input type="hidden" name="_next" value="https://egorstepkin.github.io/thanks.html">
+            <input type="hidden" name="_subject" value="Новая заявка с лендинга!">
+            <input type="text" name="_honey" style="display:none">
+            
+            <button type="submit">Получить доступ</button>
+        </form>
+    </div>
+</section>
 
     <footer>
         <div class="container">
