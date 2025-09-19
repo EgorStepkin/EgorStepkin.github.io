@@ -92,18 +92,19 @@
     </section>
 
     <section id="try">
-        <div class="container">
-            <h2>Начните бесплатно прямо сейчас</h2>
-            <form action="https://formspree.io/f/https://formspree.io/f/xeolyzrw" method="POST">
-                <input type="text" name="name" placeholder="Ваше имя" required>
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="text" name="profession" placeholder="Ваша профессия" required>
-                <input type="hidden" name="_next" value="https://egorstepkin.github.io/thanks.html">
-                <input type="hidden" name="_subject" value="Новая заявка с лендинга!">
-                <button type="submit" id="submit-btn">Получить доступ</button>
-            </form>
-        </div>
-    </section>
+    <div class="container">
+        <h2>Начните бесплатно прямо сейчас</h2>
+        <form action="https://formspree.io/f/xeolyzrw" method="POST" id="contact-form">
+            <input type="text" name="name" placeholder="Ваше имя" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="profession" placeholder="Ваша профессия" required>
+            <input type="hidden" name="_next" value="https://egorstepkin.github.io/thanks.html">
+            <input type="hidden" name="_subject" value="Новая заявка с лендинга!">
+            <input type="text" name="_gotcha" style="display:none"> <!-- Защита от спама -->
+            <button type="submit" id="submit-btn">Получить доступ</button>
+        </form>
+    </div>
+</section>
 
     <footer>
         <div class="container">
