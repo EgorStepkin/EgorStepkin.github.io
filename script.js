@@ -4,42 +4,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (form) {
         form.addEventListener('submit', function(e) {
-            e.preventDefault();
+            // Показываем состояние загрузки
+            if (submitBtn) {
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Отправка...';
+                submitBtn.disabled = true;
+                
+                // Восстанавливаем кнопку через 5 секунд на случай ошибки
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }, 5000);
+            }
             
-            // Меняем текст кнопки на время отправки
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Отправка...';
-            submitBtn.disabled = true;
-            
-            // Собираем данные формы
-            const formData = new FormData(form);
-            
-            // Отправляем данные
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Перенаправляем на страницу благодарности
-                    window.location.href = '/thanks.html';
-                } else {
-                    return response.json().then(data => {
-                        throw new Error(data.error || 'Произошла ошибка при отправке формы.');
-                    });
-                }
-            })
-            .catch(error => {
-                alert('Ошибка: ' + error.message);
-            })
-            .finally(() => {
-                // Восстанавливаем исходный текст кнопки
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            });
+            // Позволяем форме отправиться обычным way
+            // Formspree сам обработает данные
         });
     }
     
