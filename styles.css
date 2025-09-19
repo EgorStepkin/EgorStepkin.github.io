@@ -21,7 +21,7 @@ header {
 
 .logo {
     max-width: 150px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .cta-button {
@@ -33,20 +33,41 @@ header {
     border-radius: 5px;
     font-weight: bold;
     margin-top: 20px;
+    transition: background 0.3s ease;
 }
 
-.features-grid {
+.cta-button:hover {
+    background: #ff5252;
+}
+
+.features-grid, .professions-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
     margin: 50px 0;
 }
 
-.feature {
-    text-align: center;
-    padding: 20px;
+.feature, .profession {
+    background: #f8f9fa;
+    padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.feature:hover, .profession:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+#professions {
+    background: #f8f9fa;
+    padding: 80px 0;
+}
+
+#try {
+    padding: 80px 0;
+    text-align: center;
 }
 
 form {
@@ -60,6 +81,7 @@ input {
     margin: 10px 0;
     border: 1px solid #ddd;
     border-radius: 5px;
+    font-size: 16px;
 }
 
 button {
@@ -70,12 +92,39 @@ button {
     border-radius: 5px;
     cursor: pointer;
     width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #5a67d8;
+}
+
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
 }
 
 footer {
     background: #333;
     color: white;
     text-align: center;
-    padding: 20px 0;
+    padding: 30px 0;
     margin-top: 50px;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    header {
+        padding: 60px 0;
+    }
+    
+    .features-grid, .professions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .container {
+        padding: 0 15px;
+    }
 }
