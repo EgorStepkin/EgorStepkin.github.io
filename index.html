@@ -6,10 +6,659 @@
     <meta name="description" content="Автоматизация записи клиентов для мастеров красоты, визажистов, парикмахеров, барберов, массажистов, стоматологов, фитнес-тренеров и репетиторов через Telegram-бота">
     <meta name="keywords" content="запись клиентов, телеграм бот, автоматизация, мастера красоты, визажисты, парикмахеры, барберы, массажисты, стоматологи, фитнес-тренеры, репетиторы, онлайн-запись, система бронирования">
     <title>AutoZapis - Telegram-бот для записи клиентов | Для мастеров красоты, барберов, тренеров и репетиторов</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a67d8;
+            --secondary: #ff6b6b;
+            --secondary-dark: #ff5252;
+            --accent: #764ba2;
+            --light: #f8f9fa;
+            --dark: #333;
+            --gray: #6c757d;
+            --success: #4CAF50;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            scroll-behavior: smooth;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 80px 0 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M0,128L48,117.3C96,107,192,85,288,112C384,139,480,213,576,218.7C672,224,768,160,864,138.7C960,117,1056,139,1152,149.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: bottom;
+            opacity: 0.2;
+        }
+        
+        .logo {
+            max-width: 180px;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        header p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 15px 0;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo {
+            height: 40px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        /* Button Styles */
+        .cta-button {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 16px 35px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: var(--secondary-dark);
+            transition: all 0.3s ease;
+            z-index: -1;
+            border-radius: 50px;
+        }
+        
+        .cta-button:hover::before {
+            width: 100%;
+        }
+        
+        .cta-button:hover {
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+            transform: translateY(-3px);
+        }
+        
+        /* Section Styles */
+        section {
+            padding: 80px 0;
+        }
+        
+        section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--primary);
+            position: relative;
+        }
+        
+        section h2::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+        
+        /* Features Grid */
+        .features-grid, .professions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .feature, .profession {
+            background: white;
+            padding: 35px 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+        
+        .feature:hover, .profession:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature i, .profession i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .feature h3, .profession h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        /* Professions Section */
+        #professions {
+            background: var(--light);
+        }
+        
+        /* Demo Section */
+        #demo {
+            background: linear-gradient(to right, #f7f9fc 0%, white 100%);
+            text-align: center;
+        }
+        
+        .demo-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .phone-mockup {
+            width: 300px;
+            height: 600px;
+            background: white;
+            border-radius: 40px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 4px solid #e6e6e6;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #8e9eab 0%, #eef2f3 100%);
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .bot-message {
+            background: white;
+            padding: 12px 18px;
+            border-radius: 18px 18px 18px 0;
+            margin: 10px 0;
+            max-width: 80%;
+            align-self: flex-start;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .user-message {
+            background: var(--primary);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 18px 18px 0 18px;
+            margin: 10px 0;
+            max-width: 80%;
+            align-self: flex-end;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        /* Form Styles */
+        #try {
+            background: linear-gradient(135deg, #f7f9fc 0%, #eef2f7 100%);
+        }
+        
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 15px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .contact-options {
+            margin: 20px 0;
+        }
+        
+        .contact-option {
+            margin: 15px 0;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background: #f9f9f9;
+            transition: all 0.3s;
+        }
+        
+        .contact-option.selected {
+            border-color: var(--primary);
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .contact-option input[type="radio"] {
+            margin-right: 10px;
+            width: auto;
+        }
+        
+        .contact-option label {
+            margin-right: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .contact-option input[type="text"],
+        .contact-option input[type="tel"] {
+            margin-top: 10px;
+            padding: 12px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        button[type="submit"] {
+            background: var(--primary);
+            color: white;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 17px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        button[type="submit"]:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* FAQ Section */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 20px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            background: #f9f9f9;
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding: 20px;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            display: flex;
+            overflow-x: auto;
+            gap: 30px;
+            padding: 20px 0;
+            scroll-snap-type: x mandatory;
+        }
+        
+        .testimonial {
+            min-width: 300px;
+            scroll-snap-align: start;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 50px 0 30px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--secondary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            color: white;
+            background: rgba(255,255,255,0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                padding: 100px 0 80px;
+            }
+            
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            header p {
+                font-size: 1.1rem;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                margin-top: 15px;
+            }
+            
+            .nav-links li {
+                margin: 0 10px;
+            }
+            
+            .features-grid, .professions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            form {
+                padding: 25px;
+            }
+            
+            .phone-mockup {
+                width: 250px;
+                height: 500px;
+            }
+            
+            section {
+                padding: 60px 0;
+            }
+            
+            section h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <img src="images/logo.png" alt="AutoZapis" class="nav-logo">
+            <ul class="nav-links">
+                <li><a href="#features">Преимущества</a></li>
+                <li><a href="#professions">Для кого</a></li>
+                <li><a href="#demo">Демо</a></li>
+                <li><a href="#try">Начать</a></li>
+                <li><a href="#faq">Вопросы</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
     <header>
         <div class="container">
             <img src="images/logo.png" alt="AutoZapis" class="logo">
@@ -19,117 +668,441 @@
         </div>
     </header>
 
+    <!-- Features Section -->
     <section id="features">
         <div class="container">
             <h2>Почему выбирают наш бот?</h2>
             <div class="features-grid">
-                <div class="feature">
-                    <h3>📅 Автозапись 24/7</h3>
+                <div class="feature fade-in">
+                    <i class="fas fa-clock"></i>
+                    <h3>Автозапись 24/7</h3>
                     <p>Клиенты записываются в любое время, даже ночью</p>
                 </div>
-                <div class="feature">
-                    <h3>💬 Умные уведомления</h3>
+                <div class="feature fade-in">
+                    <i class="fas fa-bell"></i>
+                    <h3>Умные уведомления</h3>
                     <p>Автоматические напоминания клиентам за 24 и 2 часа</p>
                 </div>
-                <div class="feature">
-                    <h3>📊 Статистика и аналитика</h3>
+                <div class="feature fade-in">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Статистика и аналитика</h3>
                     <p>Отслеживайте свои показатели и загрузку</p>
                 </div>
-                <div class="feature">
-                    <h3>💰 Экономия времени</h3>
+                <div class="feature fade-in">
+                    <i class="fas fa-hourglass-half"></i>
+                    <h3>Экономия времени</h3>
                     <p>Больше не тратьте время на рутину записи</p>
                 </div>
-                <div class="feature">
-                    <h3>👥 Для всех специалистов</h3>
+                <div class="feature fade-in">
+                    <i class="fas fa-users"></i>
+                    <h3>Для всех специалистов</h3>
                     <p>Подходит для мастеров красоты, тренеров, репетиторов и врачей</p>
                 </div>
-                <div class="feature">
-                    <h3>📱 Простое подключение</h3>
+                <div class="feature fade-in">
+                    <i class="fas fa-plug"></i>
+                    <h3>Простое подключение</h3>
                     <p>Настройте за 5 минут без технических знаний</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Professions Section -->
     <section id="professions">
         <div class="container">
             <h2>Для кого подходит наш бот?</h2>
             <div class="professions-grid">
-                <div class="profession">
-                    <h3>💅 Мастера красоты</h3>
+                <div class="profession fade-in">
+                    <i class="fas fa-spa"></i>
+                    <h3>Мастера красоты</h3>
                     <p>Маникюр, педикюр, наращивание ресниц</p>
                 </div>
-                <div class="profession">
-                    <h3>💇 Парикмахеры и барберы</h3>
+                <div class="profession fade-in">
+                    <i class="fas fa-cut"></i>
+                    <h3>Парикмахеры и барберы</h3>
                     <p>Стрижки, окрашивание, укладки</p>
                 </div>
-                <div class="profession">
-                    <h3>🎨 Визажисты</h3>
+                <div class="profession fade-in">
+                    <i class="fas fa-paint-brush"></i>
+                    <h3>Визажисты</h3>
                     <p>Макияж, обучение, консультации</p>
                 </div>
-                <div class="profession">
-                    <h3>💆 Массажисты</h3>
+                <div class="profession fade-in">
+                    <i class="fas fa-hands"></i>
+                    <h3>Массажисты</h3>
                     <p>Все виды массажа и SPA-процедуры</p>
                 </div>
-                <div class="profession">
-                    <h3>🦷 Стоматологи</h3>
+                <div class="profession fade-in">
+                    <i class="fas fa-tooth"></i>
+                    <h3>Стоматологи</h3>
                     <p>Консультации, лечение, отбеливание</p>
                 </div>
-                <div class="profession">
-                    <h3>🏋️ Фитнес-тренеры</h3>
+                <div class="profession fade-in">
+                    <i class="fas fa-running"></i>
+                    <h3>Фитнес-тренеры</h3>
                     <p>Персональные тренировки, консультации</p>
                 </div>
-                <div class="profession">
-                    <h3>📚 Репетиторы</h3>
+                <div class="profession fade-in">
+                    <i class="fas fa-book"></i>
+                    <h3>Репетиторы</h3>
                     <p>Занятия по всем предметам и языкам</p>
                 </div>
-                <div class="profession">
-                    <h3>🎯 И другие специалисты</h3>
+                <div class="profession fade-in">
+                    <i class="fas fa-star"></i>
+                    <h3>И другие специалисты</h3>
                     <p>Психологи, косметологи, нутрициологи</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="try">
-    <div class="container">
-        <h2>Начните бесплатно прямо сейчас</h2>
-        <form action="https://formsubmit.co/egorpu@gmail.com" method="POST">
-            <input type="text" name="name" placeholder="Ваше имя" required>
-            <input type="text" name="profession" placeholder="Ваша профессия" required>
-            
-            <div class="contact-options">
-                <div class="contact-option">
-                    <input type="radio" id="contact-telegram" name="contact_type" value="telegram" checked>
-                    <label for="contact-telegram">Telegram</label>
-                    <input type="text" name="telegram" placeholder="Ваш Telegram @username" 
-                           pattern="[A-Za-z0-9_]{5,32}">
+    <!-- Demo Section -->
+    <section id="demo">
+        <div class="container">
+            <h2>Как это работает?</h2>
+            <div class="demo-container">
+                <div class="phone-mockup fade-in">
+                    <div class="phone-screen">
+                        <div class="bot-message">
+                            Добро пожаловать! Выберите услугу:
+                        </div>
+                        <div class="bot-message">
+                            1. Стрижка<br>
+                            2. Окрашивание<br>
+                            3. Укладка
+                        </div>
+                        <div class="user-message">
+                            1
+                        </div>
+                        <div class="bot-message">
+                            Выберите дату:
+                        </div>
+                        <div class="user-message">
+                            Сегодня, 15:00
+                        </div>
+                        <div class="bot-message">
+                            Запись подтверждена! Ждём вас сегодня в 15:00
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="contact-option">
-                    <input type="radio" id="contact-phone" name="contact_type" value="phone">
-                    <label for="contact-phone">Телефон</label>
-                    <input type="tel" name="phone" placeholder="+7 999 123-45-67"
-                           pattern="\+7\s?\d{3}\s?\d{3}[-]?\d{2}[-]?\d{2}">
+                <p class="fade-in">Простой и интуитивный интерфейс для ваших клиентов</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" style="background: #f8f9fa;">
+        <div class="container">
+            <h2>Отзывы наших клиентов</h2>
+            <div class="testimonials">
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        "После подключения бота количество записей увеличилось на 40%. Клиенты записываются даже ночью!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">АС</div>
+                        <div>
+                            <strong>Анна С.</strong>
+                            <div>Мастер маникюра</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        "Теперь я не трачу время на переписку с клиентами. Бот всё делает за меня. Настоящее спасение!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">МК</div>
+                        <div>
+                            <strong>Михаил К.</strong>
+                            <div>Барбер</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        "Напоминания о записи сократили количество пропущенных визитов на 90%. Клиенты очень довольны!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">ОЛ</div>
+                        <div>
+                            <strong>Ольга Л.</strong>
+                            <div>Косметолог</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <input type="hidden" name="_next" value="https://egorstepkin.github.io/thanks.html">
-            <input type="hidden" name="_subject" value="Новая заявка с лендинга!">
-            <input type="text" name="_honey" style="display:none">
-            
-            <button type="submit">Получить доступ</button>
-        </form>
-    </div>
-</section>
+        </div>
+    </section>
 
+    <!-- Try Section -->
+    <section id="try">
+        <div class="container">
+            <h2>Начните бесплатно прямо сейчас</h2>
+            <form id="signup-form" action="https://formsubmit.co/egorpu@gmail.com" method="POST">
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Ваше имя" required>
+                </div>
+                <div class="form-group">
+                    <select name="profession" required>
+                        <option value="" disabled selected>Выберите вашу профессию</option>
+                        <option value="Мастер красоты">Мастер красоты</option>
+                        <option value="Парикмахер/Барбер">Парикмахер/Барбер</option>
+                        <option value="Визажист">Визажист</option>
+                        <option value="Массажист">Массажист</option>
+                        <option value="Стоматолог">Стоматолог</option>
+                        <option value="Фитнес-тренер">Фитнес-тренер</option>
+                        <option value="Репетитор">Репетитор</option>
+                        <option value="Другое">Другое</option>
+                    </select>
+                </div>
+                
+                <div class="contact-options">
+                    <h3 style="margin-bottom: 15px;">Способ связи:</h3>
+                    <div class="contact-option selected" data-type="telegram">
+                        <input type="radio" id="contact-telegram" name="contact_type" value="telegram" checked>
+                        <label for="contact-telegram">Telegram</label>
+                        <input type="text" name="telegram" placeholder="Ваш Telegram @username" 
+                               pattern="[A-Za-z0-9_]{5,32}" required>
+                    </div>
+                    
+                    <div class="contact-option" data-type="phone">
+                        <input type="radio" id="contact-phone" name="contact_type" value="phone">
+                        <label for="contact-phone">Телефон</label>
+                        <input type="tel" name="phone" placeholder="+7 999 123-45-67"
+                               pattern="\+7\s?\d{3}\s?\d{3}[-]?\d{2}[-]?\d{2}">
+                    </div>
+                </div>
+                
+                <input type="hidden" name="_next" value="https://egorstepkin.github.io/thanks.html">
+                <input type="hidden" name="_subject" value="Новая заявка с лендинга!">
+                <input type="text" name="_honey" style="display:none">
+                
+                <button type="submit">Получить доступ</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" style="background: #f8f9fa;">
+        <div class="container">
+            <h2>Часто задаваемые вопросы</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Сколько стоит подключение бота?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Первые 14 дней вы можете пользоваться ботом совершенно бесплатно. После этого доступны различные тарифные планы в зависимости от количества записей в месяц.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Нужны ли технические знания для настройки?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Нет, настройка максимально проста и занимает не более 5 минут. Мы предоставляем пошаговую инструкцию и поддержку.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Можно ли интегрировать бота с моим сайтом?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Да, мы предоставляем код виджета, который можно разместить на вашем сайте для перенаправления клиентов в Telegram для записи.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Как клиенты будут получать напоминания?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Бот автоматически отправляет напоминания в Telegram за 24 часа и за 2 часа до записи. Это значительно сокращает количество пропущенных визитов.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
         <div class="container">
-            <p>© 2024 AutoZapis. Все права защищены</p>
-            <p>Телеграм-бот для автоматизации записи клиентов</p>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AutoZapis</h3>
+                    <p>Telegram-бот для автоматизации записи клиентов. Увеличьте количество клиентов и сократите время на администрирование.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Ссылки</h3>
+                    <ul class="footer-links">
+                        <li><a href="#features">Преимущества</a></li>
+                        <li><a href="#professions">Для кого</a></li>
+                        <li><a href="#demo">Демо</a></li>
+                        <li><a href="#try">Начать</a></li>
+                        <li><a href="#faq">Вопросы</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <p>По всем вопросам обращайтесь в Telegram:</p>
+                    <a href="https://t.me/Up_to_Great" target="_blank" style="color: #ff6b6b; text-decoration: none;">@Up_to_Great</a>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2024 AutoZapis. Все права защищены</p>
+            </div>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- Notification Element -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Создаем элемент для уведомления
+            const notification = document.getElementById('notification');
+            
+            // Плавное появление элементов при скролле
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const appearOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -100px 0px"
+            };
+            
+            const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('visible');
+                    appearOnScroll.unobserve(entry.target);
+                });
+            }, appearOptions);
+            
+            fadeElements.forEach(element => {
+                appearOnScroll.observe(element);
+            });
+            
+            // Обработчик отправки формы
+            const form = document.getElementById('signup-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    // Показываем уведомление
+                    notification.textContent = 'Заявка отправляется...';
+                    notification.style.display = 'block';
+                    
+                    // Автоматически скрываем через 3 секунды
+                    setTimeout(() => {
+                        notification.style.display = 'none';
+                    }, 3000);
+                });
+            }
+            
+            // Форматирование телефона при вводе
+            const phoneInput = document.querySelector('input[name="phone"]');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    
+                    if (value.startsWith('7') && value.length === 11) {
+                        value = '+7' + value.substring(1);
+                    } else if (value.startsWith('8') && value.length === 11) {
+                        value = '+7' + value.substring(1);
+                    } else if (value.startsWith('9') && value.length === 10) {
+                        value = '+7' + value;
+                    }
+                    
+                    // Форматирование номера: +7 999 123-45-67
+                    if (value.length > 2) {
+                        value = value.replace(/(\+7)(\d{3})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3-$4-$5');
+                    }
+                    
+                    e.target.value = value;
+                });
+            }
+            
+            // Плавная прокрутка для якорных ссылок
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#' || targetId === '#!') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Дополнительно: закрытие уведомления по клику
+            notification.addEventListener('click', function() {
+                this.style.display = 'none';
+            });
+            
+            // Переключение способов связи в форме
+            const contactOptions = document.querySelectorAll('.contact-option');
+            
+            contactOptions.forEach(option => {
+                const radio = option.querySelector('input[type="radio"]');
+                const input = option.querySelector('input[type="text"], input[type="tel"]');
+                
+                // Показываем поле для выбранного способа связи
+                if (radio.checked) {
+                    option.classList.add('selected');
+                    input.style.display = 'block';
+                    input.setAttribute('required', 'true');
+                }
+                
+                radio.addEventListener('change', function() {
+                    // Сбрасываем required для всех полей
+                    document.querySelectorAll('.contact-option input[type="text"], .contact-option input[type="tel"]').forEach(inp => {
+                        inp.removeAttribute('required');
+                        inp.style.display = 'none';
+                    });
+                    
+                    // Убираем выделение со всех вариантов
+                    contactOptions.forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Добавляем выделение и показываем поле для выбранного варианта
+                    option.classList.add('selected');
+                    input.style.display = 'block';
+                    input.setAttribute('required', 'true');
+                });
+            });
+            
+            // FAQ аккордеон
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', () => {
+                    // Закрываем все открытые вопросы
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item && otherItem.classList.contains('active')) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                    
+                    // Переключаем текущий вопрос
+                    item.classList.toggle('active');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
