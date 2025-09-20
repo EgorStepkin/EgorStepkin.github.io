@@ -362,6 +362,8 @@
             border-radius: 10px;
             cursor: zoom-in;
             transition: transform 0.3s ease;
+            max-height: 70vh;
+            object-fit: contain;
         }
         
         .slide img:hover {
@@ -452,6 +454,7 @@
             justify-content: center;
             align-items: center;
             opacity: 1;
+            animation: fadeIn 0.3s;
         }
         
         .modal-content {
@@ -743,6 +746,11 @@
             100% { transform: translateY(0px); }
         }
         
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
         .fade-in {
             opacity: 0;
             transform: translateY(20px);
@@ -824,6 +832,10 @@
                 width: 40px;
                 height: 40px;
                 padding: 10px;
+            }
+            
+            .slide img {
+                max-height: 50vh;
             }
         }
         
@@ -1147,7 +1159,7 @@
     <section id="try">
         <div class="container">
             <h2>Начните бесплатно прямо сейчас</h2>
-            <form id="signup-form" action="https://formsubmit.co/egorpu@gmail.com" method="POST">
+            <form id="signup-form" action="https://formcarry.com/s/ВАШ_ID_ФОРМЫ" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <input type="text" name="name" placeholder="Ваше имя" required>
                 </div>
@@ -1182,9 +1194,7 @@
                     </div>
                 </div>
                 
-                <input type="hidden" name="_next" value="https://egorstepkin.github.io/thanks.html">
-                <input type="hidden" name="_subject" value="Новая заявка с лендинга!">
-                <input type="text" name="_honey" style="display:none">
+                <input type="hidden" name="_gotcha">
                 
                 <button type="submit">Получить доступ</button>
             </form>
@@ -1506,13 +1516,13 @@
             }, 5000);
             
             // Останавливаем автопрокрутку при наведении мыши на слайдер
-            slider.addEventListener('mouseenter', () => {
+            slider.addEventListener('mouseenter', () {
                 clearInterval(slideInterval);
             });
             
             // Возобновляем автопрокрутку, когда мышь убирают
-            slider.addEventListener('mouseleave', () => {
-                slideInterval = setInterval(() => {
+            slider.addEventListener('mouseleave', () {
+                slideInterval = setInterval(() {
                     goToSlide(currentSlide + 1);
                 }, 5000);
             });
@@ -1530,7 +1540,7 @@
                 endX = e.touches[0].clientX;
             }, { passive: true });
             
-            slider.addEventListener('touchend', () => {
+            slider.addEventListener('touchend', () {
                 if (startX - endX > 50) {
                     // Свайп влево - следующий слайд
                     goToSlide(currentSlide + 1);
@@ -1540,7 +1550,7 @@
                 }
                 
                 // Перезапускаем автопрокрутку
-                slideInterval = setInterval(() => {
+                slideInterval = setInterval(() {
                     goToSlide(currentSlide + 1);
                 }, 5000);
             }, { passive: true });
@@ -1561,13 +1571,13 @@
             });
             
             // Закрытие модального окна
-            closeModal.addEventListener('click', () => {
+            closeModal.addEventListener('click', () {
                 modal.classList.remove('active');
                 document.body.style.overflow = '';
             });
             
             // Закрытие модального окна при клике вне изображения
-            modal.addEventListener('click', (e) => {
+            modal.addEventListener('click', (e) {
                 if (e.target === modal) {
                     modal.classList.remove('active');
                     document.body.style.overflow = '';
