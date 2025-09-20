@@ -145,14 +145,27 @@
             z-index: 1001;
         }
         
-        .burger-menu span {
+        .burger-line {
             width: 100%;
             height: 3px;
             background-color: var(--dark);
             border-radius: 10px;
             transition: all 0.3s linear;
-            position: relative;
             transform-origin: center;
+            position: relative;
+        }
+        
+        /* Анимация бургер-меню в крестик */
+        .burger-menu.active .burger-line:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        
+        .burger-menu.active .burger-line:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .burger-menu.active .burger-line:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
         }
         
         /* Мобильное меню */
@@ -199,17 +212,6 @@
         
         .mobile-menu a:hover {
             color: var(--primary);
-        }
-        
-        .close-menu {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 30px;
-            color: var(--dark);
-            cursor: pointer;
         }
         
         /* Button Styles */
@@ -798,18 +800,15 @@
             
             <!-- Кнопка бургер-меню для мобильных -->
             <button class="burger-menu" id="burger-menu">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
             </button>
         </div>
     </nav>
 
     <!-- Мобильное меню -->
     <div class="mobile-menu" id="mobile-menu">
-        <button class="close-menu" id="close-menu">
-            <i class="fas fa-times"></i>
-        </button>
         <ul>
             <li><a href="#features">Преимущества</a></li>
             <li><a href="#professions">Для кого</a></li>
@@ -842,7 +841,7 @@
                 <div class="feature fade-in">
                     <i class="fas fa-bell"></i>
                     <h3>Умные уведомления</h3>
-                    <p>Автоматические напоминания клиентам за 24 и 2 часа</p>
+                    <p>Автоматические напоминания клиентам за 2 часа и 30 минут</p>
                 </div>
                 <div class="feature fade-in">
                     <i class="fas fa-chart-line"></i>
@@ -896,7 +895,7 @@
                 <div class="profession fade-in">
                     <i class="fas fa-tooth"></i>
                     <h3>Стоматологи</h3>
-                    <p>Консультации, лечение, отбеливание</p>
+                    <p>Консультации, лечение</p>
                 </div>
                 <div class="profession fade-in">
                     <i class="fas fa-running"></i>
@@ -911,7 +910,7 @@
                 <div class="profession fade-in">
                     <i class="fas fa-star"></i>
                     <h3>И другие специалисты</h3>
-                    <p>Психологи, косметологи, нутрициологи</p>
+                    <p>Психологи, нутрициологи</p>
                 </div>
             </div>
         </div>
@@ -1055,7 +1054,7 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        Первые 14 дней вы можете пользоваться ботом совершенно бесплатно. После этого доступны различные тарифные планы в зависимости от количества записей в месяц.
+                        Первые 30 дней или 50 записей вы можете пользоваться ботом совершенно бесплатно. После этого доступны различные тарифные планы в зависимости от количества записей в месяц.
                     </div>
                 </div>
                 <div class="faq-item">
@@ -1082,7 +1081,7 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        Бот автоматически отправляет напоминания в Telegram за 24 часа и за 2 часа до записи. Это значительно сокращает количество пропущенных визитов.
+                        Бот автоматически отправляет напоминания в Telegram за 2 часа и за 30 минут до записи. Это значительно сокращает количество пропущенных визитов.
                     </div>
                 </div>
             </div>
@@ -1119,7 +1118,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>© 2024 AutoZapis. Все права защищены</p>
+                <p>© 2024 NaPriem. Все права защищены</p>
             </div>
         </div>
     </footer>
@@ -1135,27 +1134,40 @@
             // Бургер-меню
             const burgerMenu = document.getElementById('burger-menu');
             const mobileMenu = document.getElementById('mobile-menu');
-            const closeMenu = document.getElementById('close-menu');
             
-            // Открытие мобильного меню
-            burgerMenu.addEventListener('click', function() {
-                mobileMenu.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Блокируем прокрутку фона
-            });
+            // Функция переключения меню
+            function toggleMenu() {
+                burgerMenu.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                
+                if (mobileMenu.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden'; // Блокируем прокрутку фона
+                } else {
+                    document.body.style.overflow = ''; // Восстанавливаем прокрутку
+                }
+            }
             
-            // Закрытие мобильного меню
-            closeMenu.addEventListener('click', function() {
-                mobileMenu.classList.remove('active');
-                document.body.style.overflow = ''; // Восстанавливаем прокрутку
+            // Открытие/закрытие мобильного меню
+            burgerMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleMenu();
             });
             
             // Закрытие меню при клике на ссылку
             const mobileLinks = mobileMenu.querySelectorAll('a');
             mobileLinks.forEach(link => {
                 link.addEventListener('click', function() {
-                    mobileMenu.classList.remove('active');
-                    document.body.style.overflow = '';
+                    toggleMenu();
                 });
+            });
+            
+            // Закрытие меню при клике outside
+            document.addEventListener('click', function(e) {
+                if (mobileMenu.classList.contains('active') && 
+                    !mobileMenu.contains(e.target) && 
+                    !burgerMenu.contains(e.target)) {
+                    toggleMenu();
+                }
             });
             
             // Плавное появление элементов при скролле
