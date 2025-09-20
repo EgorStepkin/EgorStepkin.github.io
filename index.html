@@ -32,7 +32,7 @@
             line-height: 1.6;
             color: var(--dark);
             scroll-behavior: smooth;
-            padding-top: 80px; /* Добавляем отступ для фиксированного меню */
+            padding-top: 80px;
         }
         
         .container {
@@ -336,52 +336,149 @@
             align-items: center;
         }
         
-        .phone-mockup {
-            width: 300px;
-            height: 600px;
-            background: white;
-            border-radius: 40px;
-            padding: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            border: 4px solid #e6e6e6;
+        /* Стили для слайдера */
+        .slider-container {
             position: relative;
+            max-width: 800px;
+            margin: 0 auto 40px;
             overflow: hidden;
-            margin-bottom: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
         
-        .phone-screen {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #8e9eab 0%, #eef2f3 100%);
-            border-radius: 30px;
-            overflow: hidden;
-            position: relative;
+        .slides {
             display: flex;
-            flex-direction: column;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .slide {
+            min-width: 100%;
+            position: relative;
+        }
+        
+        .slide img {
+            width: 100%;
+            display: block;
+            border-radius: 10px;
+            cursor: zoom-in;
+            transition: transform 0.3s ease;
+        }
+        
+        .slide img:hover {
+            transform: scale(1.02);
+        }
+        
+        .slide-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.1rem;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+        
+        .slider-controls {
+            display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            margin-top: 20px;
         }
         
-        .bot-message {
-            background: white;
-            padding: 12px 18px;
-            border-radius: 18px 18px 18px 0;
-            margin: 10px 0;
-            max-width: 80%;
-            align-self: flex-start;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        
-        .user-message {
+        .slider-btn {
             background: var(--primary);
             color: white;
-            padding: 12px 18px;
-            border-radius: 18px 18px 0 18px;
-            margin: 10px 0;
-            max-width: 80%;
-            align-self: flex-end;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: none;
+            padding: 12px 20px;
+            margin: 0 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .slider-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+        
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            margin: 0 15px;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: #ccc;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .dot.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+        
+        /* Модальное окно для увеличения изображений */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1002;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255,255,255,0.1);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            color: var(--secondary);
         }
         
         /* Form Styles */
@@ -707,11 +804,6 @@
                 padding: 25px;
             }
             
-            .phone-mockup {
-                width: 250px;
-                height: 500px;
-            }
-            
             section {
                 padding: 60px 0;
             }
@@ -722,6 +814,16 @@
             
             .nav-logo {
                 height: 35px;
+            }
+            
+            .slider-container {
+                border-radius: 10px;
+            }
+            
+            .slider-btn {
+                width: 40px;
+                height: 40px;
+                padding: 10px;
             }
         }
         
@@ -753,6 +855,11 @@
             
             .feature h3, .profession h3 {
                 font-size: 1.2rem;
+            }
+            
+            .slide-caption {
+                font-size: 0.9rem;
+                padding: 10px;
             }
         }
         
@@ -793,7 +900,7 @@
             <ul class="nav-links">
                 <li><a href="#features">Преимущества</a></li>
                 <li><a href="#professions">Для кого</a></li>
-                <li><a href="#demo">Демо</a></li>
+                <li><a href="#demo">Как работает</a></li>
                 <li><a href="#try">Начать</a></li>
                 <li><a href="#faq">Вопросы</a></li>
             </ul>
@@ -812,7 +919,7 @@
         <ul>
             <li><a href="#features">Преимущества</a></li>
             <li><a href="#professions">Для кого</a></li>
-            <li><a href="#demo">Демо</a></li>
+            <li><a href="#demo">Как работает</a></li>
             <li><a href="#try">Начать</a></li>
             <li><a href="#faq">Вопросы</a></li>
         </ul>
@@ -841,7 +948,7 @@
                 <div class="feature fade-in">
                     <i class="fas fa-bell"></i>
                     <h3>Умные уведомления</h3>
-                    <p>Автоматические напоминания клиентам за 2 часа и 30 минут</p>
+                    <p>Автоматические напоминания клиентам за 24 и 2 часа</p>
                 </div>
                 <div class="feature fade-in">
                     <i class="fas fa-chart-line"></i>
@@ -895,7 +1002,7 @@
                 <div class="profession fade-in">
                     <i class="fas fa-tooth"></i>
                     <h3>Стоматологи</h3>
-                    <p>Консультации, лечение</p>
+                    <p>Консультации, лечение, отбеливание</p>
                 </div>
                 <div class="profession fade-in">
                     <i class="fas fa-running"></i>
@@ -910,45 +1017,86 @@
                 <div class="profession fade-in">
                     <i class="fas fa-star"></i>
                     <h3>И другие специалисты</h3>
-                    <p>Психологи, нутрициологи</p>
+                    <p>Психологи, косметологи, нутрициологи</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Demo Section -->
+    <!-- Demo Section with Slider -->
     <section id="demo">
         <div class="container">
             <h2>Как это работает?</h2>
             <div class="demo-container">
-                <div class="phone-mockup fade-in">
-                    <div class="phone-screen">
-                        <div class="bot-message">
-                            Добро пожаловать! Выберите услугу:
+                <div class="slider-container fade-in">
+                    <div class="slides">
+                        <div class="slide">
+                            <img src="images/старт.jpg" alt="Старт работы с ботом">
+                            <div class="slide-caption">Начало работы с ботом - команда /start</div>
                         </div>
-                        <div class="bot-message">
-                            1. Стрижка<br>
-                            2. Окрашивание<br>
-                            3. Укладка
+                        <div class="slide">
+                            <img src="images/меню команд мастера.jpg" alt="Меню команд мастера">
+                            <div class="slide-caption">Меню команд для мастера</div>
                         </div>
-                        <div class="user-message">
-                            1
+                        <div class="slide">
+                            <img src="images/тарифы.jpg" alt="Выбор тарифов">
+                            <div class="slide-caption">Выбор подходящего тарифа</div>
                         </div>
-                        <div class="bot-message">
-                            Выберите дату:
+                        <div class="slide">
+                            <img src="images/регистрация мастера1.jpg" alt="Регистрация мастера - шаг 1">
+                            <div class="slide-caption">Регистрация мастера - шаг 1</div>
                         </div>
-                        <div class="user-message">
-                            Сегодня, 15:00
+                        <div class="slide">
+                            <img src="images/регистрация мастера2.jpg" alt="Регистрация мастера - шаг 2">
+                            <div class="slide-caption">Регистрация мастера - шаг 2</div>
                         </div>
-                        <div class="bot-message">
-                            Запись подтверждена! Ждём вас сегодня в 15:00
+                        <div class="slide">
+                            <img src="images/регистрация мастера3.jpg" alt="Регистрация мастера - шаг 3">
+                            <div class="slide-caption">Регистрация мастера - шаг 3</div>
+                        </div>
+                        <div class="slide">
+                            <img src="images/подтверждение телефона.jpg" alt="Подтверждение телефона">
+                            <div class="slide-caption">Подтверждение номера телефона</div>
+                        </div>
+                        <div class="slide">
+                            <img src="images/заявка.jpg" alt="Заявка клиента">
+                            <div class="slide-caption">Пример заявки от клиента</div>
+                        </div>
+                        <div class="slide">
+                            <img src="images/отмена заявки1.jpg" alt="Отмена заявки - шаг 1">
+                            <div class="slide-caption">Отмена заявки - шаг 1</div>
+                        </div>
+                        <div class="slide">
+                            <img src="images/отмена заявки2.jpg" alt="Отмена заявки - шаг 2">
+                            <div class="slide-caption">Отмена заявки - шаг 2</div>
                         </div>
                     </div>
                 </div>
-                <p class="fade-in">Простой и интуитивный интерфейс для ваших клиентов</p>
+                
+                <div class="slider-controls">
+                    <button class="slider-btn prev-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    
+                    <div class="slider-dots">
+                        <!-- JavaScript добавит точки здесь -->
+                    </div>
+                    
+                    <button class="slider-btn next-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <p class="fade-in">Простой и интуитивный интерфейс для ваших клиентов. Нажмите на изображение для увеличения.</p>
             </div>
         </div>
     </section>
+
+    <!-- Modal for image zoom -->
+    <div class="modal" id="image-modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modal-image" alt="Увеличенное изображение">
+    </div>
 
     <!-- Testimonials Section -->
     <section id="testimonials" style="background: #f8f9fa;">
@@ -1054,7 +1202,7 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        Первые 30 дней или 50 записей вы можете пользоваться ботом совершенно бесплатно. После этого доступны различные тарифные планы в зависимости от количества записей в месяц.
+                        Первые 14 дней вы можете пользоваться ботом совершенно бесплатно. После этого доступны различные тарифные планы в зависимости от количества записей в месяц.
                     </div>
                 </div>
                 <div class="faq-item">
@@ -1081,7 +1229,7 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        Бот автоматически отправляет напоминания в Telegram за 2 часа и за 30 минут до записи. Это значительно сокращает количество пропущенных визитов.
+                        Бот автоматически отправляет напоминания в Telegram за 24 часа и за 2 часа до записи. Это значительно сокращает количество пропущенных визитов.
                     </div>
                 </div>
             </div>
@@ -1101,7 +1249,7 @@
                     <ul class="footer-links">
                         <li><a href="#features">Преимущества</a></li>
                         <li><a href="#professions">Для кого</a></li>
-                        <li><a href="#demo">Демо</a></li>
+                        <li><a href="#demo">Как работает</a></li>
                         <li><a href="#try">Начать</a></li>
                         <li><a href="#faq">Вопросы</a></li>
                     </ul>
@@ -1118,7 +1266,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>© 2024 NaPriem. Все права защищены</p>
+                <p>© 2024 AutoZapis. Все права защищены</p>
             </div>
         </div>
     </footer>
@@ -1141,9 +1289,9 @@
                 mobileMenu.classList.toggle('active');
                 
                 if (mobileMenu.classList.contains('active')) {
-                    document.body.style.overflow = 'hidden'; // Блокируем прокрутку фона
+                    document.body.style.overflow = 'hidden';
                 } else {
-                    document.body.style.overflow = ''; // Восстанавливаем прокрутку
+                    document.body.style.overflow = '';
                 }
             }
             
@@ -1300,6 +1448,138 @@
                     // Переключаем текущий вопрос
                     item.classList.toggle('active');
                 });
+            });
+            
+            // Слайдер
+            const slider = document.querySelector('.slides');
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            const dotsContainer = document.querySelector('.slider-dots');
+            let currentSlide = 0;
+            
+            // Создаем точки для навигации
+            slides.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (i === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => {
+                    goToSlide(i);
+                });
+                dotsContainer.appendChild(dot);
+            });
+            
+            const dots = document.querySelectorAll('.dot');
+            
+            // Функция перехода к определенному слайду
+            function goToSlide(slideIndex) {
+                // Зацикливаем слайдер
+                if (slideIndex < 0) {
+                    currentSlide = slides.length - 1;
+                } else if (slideIndex >= slides.length) {
+                    currentSlide = 0;
+                } else {
+                    currentSlide = slideIndex;
+                }
+                
+                // Обновляем позицию слайдера
+                slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+                
+                // Обновляем активную точку
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentSlide);
+                });
+            }
+            
+            // Обработчики для кнопок
+            prevBtn.addEventListener('click', () => {
+                goToSlide(currentSlide - 1);
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                goToSlide(currentSlide + 1);
+            });
+            
+            // Автопрокрутка слайдера
+            let slideInterval = setInterval(() => {
+                goToSlide(currentSlide + 1);
+            }, 5000);
+            
+            // Останавливаем автопрокрутку при наведении мыши на слайдер
+            slider.addEventListener('mouseenter', () => {
+                clearInterval(slideInterval);
+            });
+            
+            // Возобновляем автопрокрутку, когда мышь убирают
+            slider.addEventListener('mouseleave', () => {
+                slideInterval = setInterval(() => {
+                    goToSlide(currentSlide + 1);
+                }, 5000);
+            });
+            
+            // Добавляем поддержку свайпа на мобильных устройствах
+            let startX = 0;
+            let endX = 0;
+            
+            slider.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                clearInterval(slideInterval);
+            }, { passive: true });
+            
+            slider.addEventListener('touchmove', (e) => {
+                endX = e.touches[0].clientX;
+            }, { passive: true });
+            
+            slider.addEventListener('touchend', () => {
+                if (startX - endX > 50) {
+                    // Свайп влево - следующий слайд
+                    goToSlide(currentSlide + 1);
+                } else if (endX - startX > 50) {
+                    // Свайп вправо - предыдущий слайд
+                    goToSlide(currentSlide - 1);
+                }
+                
+                // Перезапускаем автопрокрутку
+                slideInterval = setInterval(() => {
+                    goToSlide(currentSlide + 1);
+                }, 5000);
+            }, { passive: true });
+            
+            // Модальное окно для увеличения изображений
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-image');
+            const closeModal = document.querySelector('.close-modal');
+            
+            // Открытие модального окна при клике на изображение
+            slides.forEach(slide => {
+                const img = slide.querySelector('img');
+                img.addEventListener('click', () => {
+                    modal.classList.add('active');
+                    modalImg.src = img.src;
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            // Закрытие модального окна
+            closeModal.addEventListener('click', () => {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            
+            // Закрытие модального окна при клике вне изображения
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // Закрытие модального окна клавишей ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
             });
         });
     </script>
