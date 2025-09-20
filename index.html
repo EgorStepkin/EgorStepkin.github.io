@@ -1047,40 +1047,32 @@
                             <div class="slide-caption">Начало работы с ботом - команда /start</div>
                         </div>
                         <div class="slide">
-                            <img src="images/меню команд мастера.jpg" alt="Меню команд мастера">
-                            <div class="slide-caption">Меню команд для мастера</div>
-                        </div>
-                        <div class="slide">
-                            <img src="images/тарифы.jpg" alt="Выбор тарифов">
-                            <div class="slide-caption">Выбор подходящего тарифа</div>
-                        </div>
-                        <div class="slide">
-                            <img src="images/регистрация мастера1.jpg" alt="Регистрация мастера - шаг 1">
-                            <div class="slide-caption">Регистрация мастера - шаг 1</div>
-                        </div>
-                        <div class="slide">
-                            <img src="images/регистрация мастера2.jpg" alt="Регистрация мастера - шаг 2">
-                            <div class="slide-caption">Регистрация мастера - шаг 2</div>
-                        </div>
-                        <div class="slide">
-                            <img src="images/регистрация мастера3.jpg" alt="Регистрация мастера - шаг 3">
-                            <div class="slide-caption">Регистрация мастера - шаг 3</div>
-                        </div>
-                        <div class="slide">
                             <img src="images/подтверждение телефона.jpg" alt="Подтверждение телефона">
                             <div class="slide-caption">Подтверждение номера телефона</div>
                         </div>
                         <div class="slide">
-                            <img src="images/заявка.jpg" alt="Заявка клиента">
+                            <img src="images/гугл календарь и часовой пояс мастера.jpg" alt="Настройка календаря и часового пояса">
+                            <div class="slide-caption">Настройка Google Календаря и часового пояса</div>
+                        </div>
+                        <div class="slide">
+                            <img src="images/создание глубокой ссылки и окончание регистрации.jpg" alt="Создание глубокой ссылки">
+                            <div class="slide-caption">Создание глубокой ссылки и завершение регистрации</div>
+                        </div>
+                        <div class="slide">
+                            <img src="images/меню мастера.jpg" alt="Меню мастера">
+                            <div class="slide-caption">Меню мастера с доступными командами</div>
+                        </div>
+                        <div class="slide">
+                            <img src="images/заявка от клиента.jpg" alt="Заявка от клиента">
                             <div class="slide-caption">Пример заявки от клиента</div>
                         </div>
                         <div class="slide">
-                            <img src="images/отмена заявки1.jpg" alt="Отмена заявки - шаг 1">
-                            <div class="slide-caption">Отмена заявки - шаг 1</div>
+                            <img src="images/отмена записи1.jpg" alt="Отмена записи - шаг 1">
+                            <div class="slide-caption">Отмена записи - шаг 1</div>
                         </div>
                         <div class="slide">
-                            <img src="images/отмена заявки2.jpg" alt="Отмена заявки - шаг 2">
-                            <div class="slide-caption">Отмена заявки - шаг 2</div>
+                            <img src="images/отмена записи2.jpg" alt="Отмена записи - шаг 2">
+                            <div class="slide-caption">Отмена записи - шаг 2</div>
                         </div>
                     </div>
                 </div>
@@ -1516,13 +1508,13 @@
             }, 5000);
             
             // Останавливаем автопрокрутку при наведении мыши на слайдер
-            slider.addEventListener('mouseenter', () {
+            slider.addEventListener('mouseenter', () => {
                 clearInterval(slideInterval);
             });
             
             // Возобновляем автопрокрутку, когда мышь убирают
-            slider.addEventListener('mouseleave', () {
-                slideInterval = setInterval(() {
+            slider.addEventListener('mouseleave', () => {
+                slideInterval = setInterval(() => {
                     goToSlide(currentSlide + 1);
                 }, 5000);
             });
@@ -1540,7 +1532,7 @@
                 endX = e.touches[0].clientX;
             }, { passive: true });
             
-            slider.addEventListener('touchend', () {
+            slider.addEventListener('touchend', () => {
                 if (startX - endX > 50) {
                     // Свайп влево - следующий слайд
                     goToSlide(currentSlide + 1);
@@ -1550,7 +1542,7 @@
                 }
                 
                 // Перезапускаем автопрокрутку
-                slideInterval = setInterval(() {
+                slideInterval = setInterval(() => {
                     goToSlide(currentSlide + 1);
                 }, 5000);
             }, { passive: true });
@@ -1571,13 +1563,13 @@
             });
             
             // Закрытие модального окна
-            closeModal.addEventListener('click', () {
+            closeModal.addEventListener('click', () => {
                 modal.classList.remove('active');
                 document.body.style.overflow = '';
             });
             
             // Закрытие модального окна при клике вне изображения
-            modal.addEventListener('click', (e) {
+            modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
                     modal.classList.remove('active');
                     document.body.style.overflow = '';
